@@ -21,7 +21,6 @@
                     li.remove();
                     li = null;
                 }, 200);
-
             })
 
             todoContainerRef.appendChild(li);
