@@ -35,13 +35,17 @@
     });
 
     (async () => {
+
         fetch('https://api.freeapi.app/api/v1/public/quotes', { method: 'GET' })
+
             .then(response => response.json())
+
             .then(data => {
                 for (const fetchData of data.data.data) {
                     const li = document.createElement('li');
                     li.innerText = fetchData.content;
                     todoContainerRef.append(li);
                 }
+                
             })
     })()
