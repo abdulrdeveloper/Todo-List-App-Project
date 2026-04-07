@@ -5,6 +5,131 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Todo List App</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: #0c0c12;
+            font-family: 'DM Sans', sans-serif;
+            padding: 60px 20px;
+            background-color: #0d0314fa;
+        }
+
+        #heading {
+            font-family: 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+            font-size: 40px;
+            color: #bea87b;
+            margin-bottom: 52px;
+            letter-spacing: -3px;
+            align-self: flex-start;
+            max-width: 520px;
+            width: 100%;
+        }
+
+        .input-area {
+            max-width: 520px;
+            width: 100%;
+            display: flex;
+            gap: 10px;
+            margin-bottom: 28px;
+        }
+
+        .list-area {
+            max-width: 520px;
+            width: 100%;
+        }
+
+        #todoInput {
+            flex: 1;
+            background: #1a1a2cde;
+            border: 1px solid #2a2a3a27;
+            border-radius: 12px;
+            padding: 14px 18px;
+            color: #e8e4dc;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 15px;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        #todoInput::placeholder {
+            color: #747068;
+            font-weight: 300;
+        }
+
+        #todoInput:focus {
+            border-color: #c8a86e;
+            box-shadow: 0 0 0 3px rgba(200, 169, 110, 0.08);
+        }
+
+        #createButton {
+            background: #c8a96e;
+            color: #0c0c12;
+            border: none;
+            border-radius: 12px;
+            padding: 14px 24px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: opacity 0.2s, transform 0.15s;
+            white-space: nowrap;
+        }
+
+        #createButton:hover {
+            opacity: 0.85;
+            transform: scale(0.97);
+        }
+
+        #createButton:active {
+            transform: scale(0.94);
+        }
+
+        #todoContainer {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        li {
+            color: #d4c270;
+            text-decoration: none;
+            background: rgba(33, 26, 41, 0.158);
+            border: 1px solid #2a2a3a1e;
+            border-radius: 12px;
+            padding: 15px 20px;
+            font-size: 15px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+
+        li:hover {
+            background: #181824;
+            border-color: #3a3a5252;
+            transform: translateX(3px);
+        }
+
+        .completed {
+            text-decoration: line-through;
+            color: #a8a3a3;
+            cursor: pointer;
+            background-color: #1a1a2cde;
+            border-color: #252530;
+        }
+    </style>
 </head>
 
 <body>
@@ -19,54 +144,55 @@
         </ul>
     </div>
 </body>
- <script>
-        const createButtonRef = document.getElementById('createButton');
-        const todoInput = document.getElementById('todoInput');
-        const todoContainerRef = document.getElementById('todoContainer');
+<script>
+    const createButtonRef = document.getElementById('createButton');
+    const todoInput = document.getElementById('todoInput');
+    const todoContainerRef = document.getElementById('todoContainer');
 
-        createButtonRef.addEventListener('click', function () {
-            const value = todoInput.value;
-            console.log(value);
+    createButtonRef.addEventListener('click', function () {
+        const value = todoInput.value;
+        console.log(value);
 
-            if (todoInput.value === '') {
-                return null;
-            }
-            else {
-                const li = document.createElement('li');
-                li.innerText = value;
-                li.addEventListener('click', function () {
-                    li.classList.toggle('completed');
-                });
+        if (todoInput.value === '') {
+            return null;
+        }
+        else {
+            const li = document.createElement('li');
+            li.innerText = value;
+            li.addEventListener('click', function () {
+                li.classList.toggle('completed');
+            });
 
-                li.addEventListener('dblclick', function () {
-                    setTimeout(() => {
-                        li.remove();
-                        li = null;
-                    }, 200);
+            li.addEventListener('dblclick', function () {
+                setTimeout(() => {
+                    li.remove();
+                    li = null;
+                }, 200);
 
-                })
+            })
 
-                todoContainerRef.appendChild(li);
-                todoInput.value = '';
-            }
-        });
+            todoContainerRef.appendChild(li);
+            todoInput.value = '';
+        }
+    });
 
-        todoInput.addEventListener('keydown', function (eventCheck) {
-            if (eventCheck.key === "Enter") {
-                createButtonRef.click();
-            }
-        });
+    todoInput.addEventListener('keydown', function (eventCheck) {
+        if (eventCheck.key === "Enter") {
+            createButtonRef.click();
+        }
+    });
 
-        (async () => {
-            fetch('https://api.freeapi.app/api/v1/public/quotes', { method: 'GET' })
-                .then(response => response.json())
-                .then(data => {
-                    for (const fetchData of data.data.data) {
-                        const li = document.createElement('li');
-                        li.innerText = fetchData.content;
-                        todoContainerRef.append(li);
-                    }
-                })
-        })()
-    </script>
+    (async () => {
+        fetch('https://api.freeapi.app/api/v1/public/quotes', { method: 'GET' })
+            .then(response => response.json())
+            .then(data => {
+                for (const fetchData of data.data.data) {
+                    const li = document.createElement('li');
+                    li.innerText = fetchData.content;
+                    todoContainerRef.append(li);
+                }
+            })
+    })()
+</script>
+
 </html>
